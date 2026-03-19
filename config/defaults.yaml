@@ -1,0 +1,33 @@
+max_topics_per_run: 2
+default_topics_per_run: 1
+mode: routine
+
+# Spend controls
+allow_burn_mode: true
+min_reserve_diem: 2.0
+max_estimated_diem_per_topic_routine: 0.25
+max_estimated_diem_per_topic_burn: 3.0
+
+# Optional tide-pool package hook (if installed)
+usage_probe_script: scripts/provider-usage.sh
+
+# Source defaults
+default_sources:
+  - brave
+  - knowledge-search
+optional_sources:
+  - perplexity
+  - twitter
+  - coingecko
+  - coinmarketcap
+  - browser
+
+# Output defaults
+write_topics_dir: knowledge/topics
+write_research_dir: knowledge/research
+max_lines_soft_cap: 300
+append_update_section: true
+
+# Scheduling hints (for cron payload text)
+recommended_schedule_local_time: "02:30"
+recommended_timezone: "America/Los_Angeles"
