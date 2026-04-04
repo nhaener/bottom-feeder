@@ -110,7 +110,7 @@ Replace the default topics with what matters to your team. Organize by priority 
 Default: Brave search + local knowledge. Optional: Perplexity (deep synthesis), Twitter (sentiment), CoinGecko/CoinMarketCap (crypto data), browser (page extraction). Add your own source modules in `references/research-sources/`.
 
 ### Budget
-Set `min_reserve_usd: 0` for no reserve, or a positive number to keep a safety buffer. The `min_reserve_diem` field is kept for backward compatibility with Venice setups.
+Set `min_reserve_usd: 0` for no reserve, or a positive number to keep a safety buffer. For Venice-first setups, keep `min_reserve_diem` as a legacy fallback reserve when USD is not configured. Optional per-topic caps can use provider-agnostic `max_estimated_cost_units_per_topic_*` (legacy `max_estimated_diem_per_topic_*` remains supported).
 
 ---
 
