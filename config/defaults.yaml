@@ -17,6 +17,10 @@ max_estimated_cost_units_per_topic_burn: 3.0
 # Legacy aliases (kept for backward compatibility with older prompts/docs)
 max_estimated_diem_per_topic_routine: 0.25
 max_estimated_diem_per_topic_burn: 3.0
+# Multi-profile support
+# If your provider has multiple auth profiles (e.g., team seats, API keys),
+# set auth_profiles to track rotation. Agent will flag when a profile is exhausted.
+# auth_profiles: 1  # default: single profile, no rotation needed
 
 # Multi-profile support
 # If your provider has multiple auth profiles (e.g., team seats, API keys),

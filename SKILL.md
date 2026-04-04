@@ -138,6 +138,11 @@ If `config/run-policy.md` declares a fallback chain, enforce it per `references/
 
 ### Provider lock (strict mode)
 If `config/run-policy.md` specifies `provider_lock: <provider>` and **no** fallback chain, enforce the lock strictly and stop on failure. Do not silently switch providers. This mode should be used only when provider compliance is a hard requirement (legal/billing/policy). Prefer fallback chains in normal operation.
+3. Keep reserve from config (`min_reserve_usd`) if set
+4. Use heavier model + more sources (all optional sources enabled)
+5. Save after every topic (incremental write — never batch)
+6. Stop gracefully if balance or provider limit is hit
+7. If multiple auth profiles are available, monitor for exhaustion and note when rotation is needed
 
 ## Ad-hoc topic injection
 
