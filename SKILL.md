@@ -1,6 +1,6 @@
 ---
 name: bottom-feeder
-description: Depth-first knowledge crawling workflow that selects 1-2 high-value topics, researches with configured sources, synthesizes durable notes, and writes/updates files in knowledge/topics and knowledge/research. Use when asked to build or refresh knowledge files, run a scheduled knowledge-crawl, detect knowledge gaps, or run low-cost/Diem-aware research passes.
+description: Depth-first knowledge crawling workflow that selects 1-2 high-value topics, researches with configured sources, synthesizes durable notes, and writes/updates files in knowledge/topics and knowledge/research. Use when asked to build or refresh knowledge files, run a scheduled knowledge-crawl, detect knowledge gaps, or run budget-aware research passes (supports any provider — Anthropic, OpenAI, Venice/Diem, etc.).
 ---
 
 # Bottom Feeder
@@ -53,7 +53,7 @@ Low-cost default: brave only, plus local knowledge lookup.
 Create one durable, standalone knowledge artifact per topic:
 - What it is
 - Current state
-- Why it matters for JPop/EdgeClaw ecosystem
+- Why it matters (for the user's ecosystem/team/work)
 - Key entities/projects
 - Open questions + what to watch
 - Sources with dates
@@ -89,15 +89,16 @@ This is your audit trail — always current, even if the run is interrupted.
 - quiet completion unless user asked for report
 
 ### Burn mode (explicit only)
-Use when user explicitly asks to consume remaining Diem/credits.
+Use when user explicitly asks to consume remaining credits/budget aggressively.
 
 Steps:
-1. Run `scripts/provider-usage.sh` (uses optional standalone `tide-pool` package when present; supports legacy lobster path)
-2. Run `scripts/check-balance.sh` if you already have Diem JSON input to parse
-3. Keep reserve from config (`min_reserve_diem`)
-4. Use heavier model + more sources
-5. Save after every topic
+1. Run `scripts/provider-usage.sh` to check current usage (supports Tide Pool, legacy lobster, or generic `openclaw status` fallback)
+2. Run `scripts/check-balance.sh` if you have balance JSON input to parse (supports generic fields: `remaining`, `balance`, `credits`, or Venice-specific `venice.data.diem`)
+3. Keep reserve from config: use `min_reserve_usd` when set (>0), otherwise fall back to legacy `min_reserve_diem`
+4. Use heavier model + more sources (all optional sources enabled)
+5. Save after every topic (incremental write — never batch)
 6. Stop gracefully if balance or provider limit is hit
+7. If multiple auth profiles are available, monitor for exhaustion and note when rotation is needed
 
 ## Ad-hoc topic injection
 
@@ -113,6 +114,7 @@ Users can pass topics directly instead of using the seed list:
 - Prefer free/local sources first.
 - If source collection is weak, write a partial with clear uncertainty notes.
 - Keep files readable; split oversized output into follow-up research files.
+- In burn mode with multiple auth profiles, track which profile is active and flag when switching is needed.
 
 ## Quick manual run recipe
 

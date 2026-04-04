@@ -13,7 +13,8 @@ Include YAML header:
 - crawled (ISO timestamp)
 - mode (routine|burn)
 - sources_used
-- estimated_cost_diem
+- estimated_cost_units (optional, provider-agnostic relative cost)
+- estimated_cost_diem (optional, legacy Venice compatibility)
 - confidence (low|medium|high)
 
 Body sections (recommended):

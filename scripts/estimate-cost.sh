@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Rough Diem estimate by mode and source count.
+# Rough cost estimate by mode and source count.
+# Returns a relative cost unit (not tied to any specific provider currency).
+# Routine ~0.08 base, Burn ~0.60 base, +0.03 per additional source.
 mode="${1:-routine}"
 sources="${2:-2}"
 
