@@ -58,15 +58,27 @@ Create one durable, standalone knowledge artifact per topic:
 - Open questions + what to watch
 - Sources with dates
 
-For updates, include a short "What’s new since last update" section.
+For updates, include a short "What's new since last update" section.
+
+### 3.5) Quality gate
+
+Before advancing to the next topic, run:
+- `references/quality-gate/completion-checklist.md`
+
+Every section must pass or be explicitly tagged `[INCOMPLETE: reason]`.
+Do not start topic N+1 until topic N clears the gate.
 
 ### 4) Write output
 
 Use:
 - `references/output/knowledge-writer.md`
+- `references/output/run-progress.md`
 - `references/output/lobsearch-index.md`
 
 Write immediately after each topic (incremental write, never batch all topics first).
+
+After writing each topic, update the run progress log (`knowledge/.runs/<date>-<mode>.md`).
+This is your audit trail — always current, even if the run is interrupted.
 
 ## Modes
 
@@ -86,6 +98,13 @@ Steps:
 4. Use heavier model + more sources
 5. Save after every topic
 6. Stop gracefully if balance or provider limit is hit
+
+## Ad-hoc topic injection
+
+Users can pass topics directly instead of using the seed list:
+- "Run bottom feeder on [topic1, topic2, ...]"
+- Ad-hoc topics skip the selection stage entirely — go straight to research.
+- Still subject to quality gate and progress logging.
 
 ## Guardrails
 
