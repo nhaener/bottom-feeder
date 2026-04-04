@@ -1,112 +1,98 @@
 # 🦞 Bottom Feeder
 
-**A depth-first knowledge crawler skill for OpenClaw** that researches high-value topics without nuking your balance.  
-Small sips by default. Big feast mode only when you say so. 🌊
+A depth-first knowledge crawler skill for OpenClaw that turns research prompts into durable knowledge artifacts (`knowledge/topics`, `knowledge/research`, `knowledge/procedures`) without blind budget burn.
 
 ---
 
-## ✨ What it does
+## What it does
 
-Bottom Feeder runs a 4-stage pipeline:
+Bottom Feeder runs a practical pipeline:
 
-1. 🎯 **Topic Selection** (pick the best 1–2 topics)
-2. 🔎 **Research Collection** (Brave baseline + optional modules)
-3. 🧠 **Synthesis** (durable, useful markdown)
-4. 📝 **Output Writing** (to `knowledge/topics/` or `knowledge/research/`)
+1. **Execution planning** (single / batched / supervised)
+2. **Topic selection** (seeds + gaps + refresh + optional external signals)
+3. **Research collection** (Brave baseline + optional sources)
+4. **Synthesis** (durable, self-contained markdown)
+5. **Output writing + run logging** (audit trail in `knowledge/.runs/...`)
+6. **Checkpoint monitoring** (for long runs)
 
-It is designed for **depth over spam** and **budget-aware behavior**.
-
-**Works with any provider** — Anthropic, OpenAI, Venice/Diem, or whatever you're running. No vendor lock-in.
+It is provider-agnostic and works with Anthropic/OpenAI/Venice/etc.
 
 ---
 
-## 📦 Folder placement (noob-safe)
+## New in this release
 
-Put this repo folder inside your OpenClaw workspace `skills/` directory.
+- ✅ **Execution modes**: single, batched parallel, supervised
+- ✅ **Provider fallback chains** with failure/cooldown triggers
+- ✅ **Checkpoint monitoring pattern** for long runs
+- ✅ **Recovery procedures** for subagent failures and run-log drift
+- ✅ **External signal integration** (Asana/Jira/Linear/GitHub/Notion/generic)
+- ✅ **Run-policy and signals templates**
+- ✅ **Provider preflight script**: `scripts/check-provider-health.sh`
+
+---
+
+## Folder placement
 
 ```text
-/root/.openclaw/workspace/
+workspace/
 ├── skills/
-│   ├── bottom-feeder/   👈 place this folder here
-│   │   ├── SKILL.md
-│   │   ├── config/
-│   │   ├── references/
-│   │   └── scripts/
-│   └── (other skills...)
+│   └── bottom-feeder/
+│       ├── SKILL.md
+│       ├── config/
+│       ├── references/
+│       └── scripts/
 └── knowledge/
     ├── topics/
-    └── research/
-```
-
-### Mermaid map 🗺️
-
-```mermaid
-flowchart TD
-    A[OpenClaw Workspace] --> B[skills]
-    B --> C[bottom-feeder]
-    C --> C1[SKILL.md]
-    C --> C2[config]
-    C --> C3[references]
-    C --> C4[scripts]
-    A --> D[knowledge]
-    D --> D1[topics]
-    D --> D2[research]
+    ├── research/
+    └── .runs/
 ```
 
 ---
 
-## 🚀 Quick start
+## Quick start
 
-1. Copy this folder into `workspace/skills/bottom-feeder`
-2. Confirm files exist:
+1. Install skill folder in `workspace/skills/bottom-feeder`
+2. Check required files:
    - `SKILL.md`
    - `config/defaults.yaml`
    - `scripts/provider-usage.sh`
    - `scripts/check-balance.sh`
-3. Customize `config/topics.md` for your team's needs (see the file for guidance)
-4. Run a low-burn test:
-   - one topic
-   - Brave-only source
-   - output to `knowledge/topics/<slug>.md`
+3. (Optional) Copy templates:
+   - `config/run-policy.md.example` → `config/run-policy.md`
+   - `config/signals.yaml.example` → `config/signals.yaml`
+4. Run one routine topic first.
 
 ---
 
-## 💸 Balance behavior
+## Key docs
 
-- **Routine mode**: low-cost and cautious (1 topic, default sources, concise synthesis)
-- **Burn mode**: only when explicitly requested (all sources, deeper synthesis, heavier model)
-- **Reserve guardrail**: configurable via `min_reserve_usd` (or legacy `min_reserve_diem`)
-- **Multi-profile support**: if your provider has multiple auth profiles (team seats, API keys), the agent tracks rotation and flags when a profile is exhausted
-
-Bottom Feeder can read usage from the optional Tide Pool plugin (`provider-usage.sh`) and parse balances via `check-balance.sh`.
-
----
-
-## 🧪 Included scripts
-
-- `scripts/provider-usage.sh` — provider usage snapshot (Tide Pool → legacy lobster → `openclaw status` fallback)
-- `scripts/check-balance.sh` — parse budget from JSON (supports `remaining`, `balance`, `credits`, or `venice.data.diem`)
-- `scripts/estimate-cost.sh` — rough relative cost estimate by mode/source count
+- `references/execution/execution-modes.md`
+- `references/execution/provider-fallback.md`
+- `references/execution/checkpoint-monitoring.md`
+- `references/execution/recovery-patterns.md`
+- `references/topic-selection/external-signals.md`
+- `references/output/run-progress.md`
+- `references/quality-gate/completion-checklist.md`
 
 ---
 
-## 🔧 Customization
+## Scripts
 
-### Topic seeds (`config/topics.md`)
-Replace the default topics with what matters to your team. Organize by priority tiers — the agent will pick the highest-value topics first. The more specific your seeds, the better the output.
-
-### Sources
-Default: Brave search + local knowledge. Optional: Perplexity (deep synthesis), Twitter (sentiment), CoinGecko/CoinMarketCap (crypto data), browser (page extraction). Add your own source modules in `references/research-sources/`.
-
-### Budget
-Set `min_reserve_usd: 0` for no reserve, or a positive number to keep a safety buffer. For Venice-first setups, keep `min_reserve_diem` as a legacy fallback reserve when USD is not configured. Optional per-topic caps can use provider-agnostic `max_estimated_cost_units_per_topic_*` (legacy `max_estimated_diem_per_topic_*` remains supported).
+- `scripts/provider-usage.sh` — usage probe
+- `scripts/check-balance.sh` — budget parser
+- `scripts/estimate-cost.sh` — rough cost estimator
+- `scripts/check-provider-health.sh` — provider reachability preflight
 
 ---
 
-## 🦞 Vibe notes
+## Recommended defaults for broad teams
 
-- Keep it crusty
-- Keep it clean
-- Don't zero the tank unless boss says so
+- Start with `execution_mode: single` in routine mode
+- Use `execution_mode: batched`, `batch_size: 2-3` in burn mode
+- Enable supervised mode + checkpoints for runs >2h
+- Configure a fallback chain instead of strict provider lock
+- Keep subagents short-lived (1 topic each)
 
-**Ran rah. Click clack.**
+---
+
+Keep it useful, keep it auditable, keep it alive under failure.

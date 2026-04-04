@@ -26,7 +26,57 @@ max_estimated_diem_per_topic_burn: 3.0
 # Optional tide-pool package hook (if installed)
 usage_probe_script: scripts/provider-usage.sh
 
-# Source defaults
+# ------------------------------------------------------------------
+# Execution planning
+# ------------------------------------------------------------------
+# Decides how the run physically executes. See references/execution/execution-modes.md.
+#   single:    one session, sequential topic writing (default for routine mode)
+#   batched:   N concurrent short-lived subagents, 1 topic each
+#   supervised: coordinator + workers + checkpoint crons (long runs)
+execution_mode: single
+
+# Max concurrent subagents when execution_mode is batched/supervised.
+# KEEP SMALL. Spawning >3 at once is the #1 cause of rate-limit cascades.
+batch_size: 3
+
+# Max lifetime for a single worker subagent (seconds).
+# Short-lived subagents are more reliable than long-running ones.
+subagent_timeout_seconds: 900
+
+# For supervised runs: how often checkpoint monitors fire (minutes).
+checkpoint_interval_minutes: 30
+
+# ------------------------------------------------------------------
+# Provider fallback
+# ------------------------------------------------------------------
+# Optional ordered fallback chain. Triggered when the primary provider
+# returns qualified failures (rate_limit, cooldown, auth, transport).
+# See references/execution/provider-fallback.md for full semantics.
+#
+# Each entry is a provider identifier your orchestrator understands.
+# Examples: anthropic, openai, google, venice, local-ollama
+#
+# Leave empty [] to disable fallback (strict primary-only).
+provider_fallback: []
+
+# How many consecutive qualified failures trigger rotation to next provider.
+fallback_after_consecutive_failures: 2
+
+# Cooldown window (minutes). If the primary stays rate-limited longer than
+# this, rotate to the next provider even if failure count is low.
+fallback_cooldown_minutes: 10
+
+# ------------------------------------------------------------------
+# External signal sources (optional)
+# ------------------------------------------------------------------
+# If true, the topic-selection stage will read config/signals.yaml and
+# pull live task/issue/ticket signal to steer topics toward real
+# operational pressure. See references/topic-selection/external-signals.md.
+enable_external_signals: false
+
+# ------------------------------------------------------------------
+# Sources
+# ------------------------------------------------------------------
 default_sources:
   - brave
   - knowledge-search
@@ -37,7 +87,9 @@ optional_sources:
   - coinmarketcap
   - browser
 
+# ------------------------------------------------------------------
 # Output defaults
+# ------------------------------------------------------------------
 write_topics_dir: knowledge/topics
 write_research_dir: knowledge/research
 max_lines_soft_cap: 300
