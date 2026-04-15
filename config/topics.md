@@ -1,32 +1,25 @@
-# Bottom Feeder Topic Seed
+# Bottom Feeder Topic Seeds — Nick's Workspace
 
-> Customize this file for your workspace. Topics should reflect what matters
-> to your team, your product, and your current priorities.
->
-> Tip: organize by tiers — urgent decisions first, long-term research last.
-> The agent will use conversation-mining and knowledge-gap detection to
-> supplement this list, but strong seeds produce better results.
+## AI & OpenClaw (High Priority)
+- Claude CLI integration patterns for cost optimization — routing heavy tasks through CLI vs API
+- OpenClaw plugin development — architecture, lifecycle, best practices
+- Agent memory systems — episodic vs semantic, file-based approaches, crustacean-cognition patterns
+- Multi-agent orchestration — task delegation, inter-agent communication, safety patterns
+- AI coding assistants comparison — Claude Code vs Codex vs Cursor vs Windsurf
 
-## Crypto & DeFi
-- FHE-based private DeFi landscape (Fhenix, Arcium, Zama ecosystem)
-- Privacy L2 progress (Namada, 0xMiden, comparable systems)
-- Agentic wallets and intent execution infrastructure
-- Swap aggregation architecture — multi-DEX routing, slippage, MEV protection
+## Home Server & Self-Hosting (Medium Priority)
+- Raspberry Pi 5 performance optimization — thermal management, NVMe, RAM constraints
+- Self-hosted AI infrastructure — local models, Ollama, embedding servers on ARM64
+- Home automation with AI agents — practical integrations
+- Tailscale networking patterns — secure remote access, subnet routing
 
-## AI & Agents
-- Multi-agent orchestration patterns that map to OpenClaw workflows
-- Agent memory systems (episodic vs semantic) in production assistants
-- Prompt-injection and tool safety patterns for autonomous agents
-- AI adoption playbooks for internal teams — change management, measuring ROI
+## Security & Privacy (Medium Priority)
+- Prompt injection defenses for autonomous agents
+- Secret management for personal/small-team setups
+- Supply chain attack protections for npm ecosystems
+- AI agent safety patterns — sandboxing, allowlists, exec policies
 
-## Tools & Infra
-- MCP ecosystem changes relevant to team workflows
-- Tailscale + browser relay reliability patterns
-- Secrets management for small teams (Infisical, Vault, Doppler)
-- Supply chain attack protections for npm/package ecosystems
-
-## Product / Team
-- Practical AI adoption playbooks for internal teams
-- Privacy vs convenience tradeoffs in real deployments
-- Scrumban/Kanban adoption for small engineering teams — WIP limits, pull systems, ceremonies
-- Release efficiency patterns for mobile apps — code freeze discipline, QA sweep optimization
+## Gaming & Hardware (Low Priority)
+- AMD RDNA 4 optimization — drivers, FSR, frame generation tuning
+- Linux gaming on Raspberry Pi — emulation, streaming
+- PC building trends 2026 — DDR5, NVMe Gen5, power efficiency

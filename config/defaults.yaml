@@ -1,6 +1,6 @@
 max_topics_per_run: 2
 default_topics_per_run: 1
-mode: routine
+mode: burn
 
 # Spend controls
 # Provider-agnostic: works with Anthropic, OpenAI, Venice/Diem, or any provider.
